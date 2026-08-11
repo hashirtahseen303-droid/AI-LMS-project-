@@ -1,0 +1,111 @@
+{
+  "version": 1,
+  "sdk_version": "0.26.1",
+  "path": "/mcp",
+  "auth": {
+    "type": "none"
+  },
+  "mcp": {
+    "server": {
+      "name": "eminence-lms",
+      "version": "0.1.0",
+      "title": "Eminence LMS"
+    },
+    "tools": [
+      {
+        "name": "school_info",
+        "title": "School portal info",
+        "description": "Describe the Nawaz Sharif School of Eminence LMS portal: roles, exam types, grading scale and student ID numbering rules.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "next_student_id",
+        "title": "Next student ID / roll number",
+        "description": "Given a class name (e.g. 'Class 5', 'Prep') and the IDs already in use, return the next available Student ID / Roll Number following the school's numbering rules.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "className": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Class name, e.g. 'Class 5', 'Play Group', 'Prep'."
+            },
+            "takenIds": {
+              "description": "Student IDs already assigned in that class, e.g. ['C501','C502'].",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "className"
+          ]
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "calculate_grade",
+        "title": "Calculate grade",
+        "description": "Compute total, percentage and letter grade from a list of subject marks using the school's grading scale.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "subjects": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Subject name."
+                  },
+                  "obtained": {
+                    "type": "number",
+                    "description": "Marks obtained."
+                  },
+                  "total": {
+                    "type": "number",
+                    "description": "Total marks for the subject."
+                  }
+                },
+                "required": [
+                  "name",
+                  "obtained",
+                  "total"
+                ]
+              },
+              "description": "One entry per subject."
+            }
+          },
+          "required": [
+            "subjects"
+          ]
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}
